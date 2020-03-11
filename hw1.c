@@ -109,6 +109,8 @@ int main(int argc, char **argv){
         /* Calculate the max number in given array */
         local_max = findMax(sub_array,sub_array_length);
         /* 
+            After a process send it's local max, it's alive val becomes 0 exists.
+            
             First turn begins, one of every two process sends the local max to their pairs 
             1->0, 3->2 5->4...
         */
@@ -126,6 +128,10 @@ int main(int argc, char **argv){
             MPI_Recv(&received_max,1,MPI_FLOAT,process_rank+1,0, MPI_COMM_WORLD, &status);
             if(received_max > local_max) local_max = received_max;
         }
+        /* 
+            Second turn begins, one of every two process sends the local max to their pairs 
+            2->0 6->4 10->8 14->12
+        */
         if (alive && process_count >= 4 && process_rank % 4 == 2) {
             //printf("2nd round %d sending data to %d\n", process_rank, (process_rank-2));
             //fflush(stdout);
@@ -140,6 +146,10 @@ int main(int argc, char **argv){
             MPI_Recv(&received_max,1,MPI_FLOAT,process_rank+2,0, MPI_COMM_WORLD, &status);
             if(received_max > local_max) local_max = received_max;
         }
+        /* 
+            Third turn begins, one of every two process sends the local max to their pairs 
+            4->0, 12->8
+        */
         if (alive && process_count >= 8 && process_rank % 8 == 4) {
             //printf("3rd round %d sending data to %d\n", process_rank, (process_rank-4));
             //fflush(stdout);
@@ -154,6 +164,10 @@ int main(int argc, char **argv){
             MPI_Recv(&received_max,1,MPI_FLOAT,process_rank+4,0, MPI_COMM_WORLD, &status);
             if(received_max > local_max) local_max = received_max;
         }
+        /* 
+            Fourth turn begins, one of every two process sends the local max to their pairs 
+            8->0
+        */
         if (alive && process_count >= 16 && process_rank % 16 == 8) {
             //printf("4th round %d sending data to %d\n", process_rank, (process_rank-8));
             //fflush(stdout);
