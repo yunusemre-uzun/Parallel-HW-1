@@ -52,7 +52,6 @@ int main(int argc, char **argv){
 
     // Initialize the MPI environment
     MPI_Init(NULL, NULL);
-    start_time = MPI_Wtime();
     // Get the rank of the process
     MPI_Comm_rank(MPI_COMM_WORLD, &process_rank);
     if(process_rank == 0) {
@@ -60,6 +59,7 @@ int main(int argc, char **argv){
         // Get the number of processes
         MPI_Comm_size(MPI_COMM_WORLD, &process_count);
         if(process_count == 1) {
+            start_time = MPI_Wtime();
             // If there is only one process is created then the program runs in sequential
             local_max = findMax(array, number_of_lines);
             end_time = MPI_Wtime();
@@ -73,6 +73,7 @@ int main(int argc, char **argv){
                 // Send the part of the array to process i
                 MPI_Send(array+i*sub_array_length,sub_array_length, MPI_FLOAT, i, 0, MPI_COMM_WORLD);
             }
+            start_time = MPI_Wtime();
             local_max = findMax(array, sub_array_length);
             /* 1st turn of value sharing */
             if(process_count >= 2) {
