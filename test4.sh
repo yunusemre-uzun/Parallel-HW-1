@@ -1,3 +1,9 @@
+#!/bin/bash
+# This file test.sh is a sample script to run the many jobs by making use of multiple cores
+# To have output file defined as output.txt, run your script with sbatch -o slurm-%A_%a.out test.sh
+# command where %A is the id of the submitted jobs and %a is {0..ntasks}
+# To have one output file for all simultaneous task, run your script with sbatch test.sh
+
 # set the partition where the job will run
 #SBATCH --partition=halley
 
@@ -5,7 +11,7 @@
 #SBATCH --job-name=slurm_test
 
 # The default output file if we run the script with the command sbatch test.sh
-#SBATCH --output=4_out.txt
+SBATCH --output=4_out.txt
 
 # set the number of nodes and processes per node
 # That is, we will run this many tasks simultaneously
