@@ -15,7 +15,7 @@ SBATCH --output=16_out.txt
 
 # set the number of nodes and processes per node
 # That is, we will run this many tasks simultaneously
-#SBATCH --nodes=16
+SBATCH --nodes=16
 
 # mail alert at start, end and abortion of execution
 # The user will be mailed when the job starts and stops or aborts
